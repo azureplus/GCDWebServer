@@ -262,12 +262,14 @@
 
 - (GCDWebServerResponse*)createDirectory:(GCDWebServerURLEncodedFormRequest*)request {
   NSString* relativePath = [request.arguments objectForKey:@"path"];
-  NSString* absolutePath = [self _uniquePathForPath:[_uploadDirectory stringByAppendingPathComponent:relativePath]];
+  NSString* absolutePath = [_uploadDirectory stringByAppendingPathComponent:relativePath];
   NSString* directoryName = [absolutePath lastPathComponent];
   if ([self _fileExistsAtPath:absolutePath]){
     return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Creating directory name \"%@\" already exists", directoryName];
   }
     
+  directoryName = [absolutePath lastPathComponent];
+  absolutePath = [self _uniquePathForPath:absolutePath];
   if (![self _checkSandboxedPath:absolutePath]) {
     return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_NotFound message:@"\"%@\" does not exist", relativePath];
   }
