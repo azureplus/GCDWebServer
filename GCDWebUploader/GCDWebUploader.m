@@ -203,6 +203,12 @@
   }
   
   NSString* newRelativePath = [request.arguments objectForKey:@"newPath"];
+    
+ if (![self shouldMoveItemFromPath:oldAbsolutePath toPath:[_uploadDirectory stringByAppendingPathComponent:newRelativePath]])
+ {
+        return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Moving \"%@\" to \"%@\" is not permitted", oldRelativePath, newRelativePath];
+ }
+    
   NSString* newAbsolutePath = [self _uniquePathForPath:[_uploadDirectory stringByAppendingPathComponent:newRelativePath]];
   if (![self _checkSandboxedPath:newAbsolutePath]) {
     return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_NotFound message:@"\"%@\" does not exist", newRelativePath];
@@ -213,9 +219,7 @@
     return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Moving to item name \"%@\" is not allowed", itemName];
   }
   
-  if (![self shouldMoveItemFromPath:oldAbsolutePath toPath:newAbsolutePath]) {
-    return [GCDWebServerErrorResponse responseWithClientError:kGCDWebServerHTTPStatusCode_Forbidden message:@"Moving \"%@\" to \"%@\" is not permitted", oldRelativePath, newRelativePath];
-  }
+
   
   NSError* error = nil;
   if (![[NSFileManager defaultManager] moveItemAtPath:oldAbsolutePath toPath:newAbsolutePath error:&error]) {
