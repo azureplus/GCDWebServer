@@ -256,7 +256,7 @@
     return [GCDWebServerErrorResponse responseWithServerError:kGCDWebServerHTTPStatusCode_InternalServerError underlyingError:error message:@"Failed deleting \"%@\"", relativePath];
   }
   
-  if ([self.delegate respondsToSelector:@selector(webUploader:didDeleteItemAtPath:)]) {
+    if ([self.delegate respondsToSelector:@selector(webUploader:didDeleteItemAtPath:isDirectory:)]) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.delegate webUploader:self didDeleteItemAtPath:absolutePath isDirectory:isDirectory];
     });
