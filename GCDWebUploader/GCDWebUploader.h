@@ -55,7 +55,7 @@
 /**
  *  This method is called whenever a file or directory has been deleted.
  */
-- (void)webUploader:(GCDWebUploader*)uploader didDeleteItemAtPath:(NSString*)path;
+- (void)webUploader:(GCDWebUploader*)uploader didDeleteItemAtPath:(NSString*)path isDirectory:(BOOL)isDirectory;
 
 /**
  *  This method is called whenever a directory has been created.

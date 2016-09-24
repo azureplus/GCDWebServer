@@ -258,7 +258,7 @@
   
   if ([self.delegate respondsToSelector:@selector(webUploader:didDeleteItemAtPath:)]) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self.delegate webUploader:self didDeleteItemAtPath:absolutePath];
+        [self.delegate webUploader:self didDeleteItemAtPath:absolutePath isDirectory:isDirectory];
     });
   }
   return [GCDWebServerDataResponse responseWithJSONObject:@{}];
